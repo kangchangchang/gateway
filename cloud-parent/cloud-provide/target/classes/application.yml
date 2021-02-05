@@ -1,0 +1,26 @@
+server:
+  port: 7200 #原来是http的8080
+spring:
+  application:
+    name: nacos-provide
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+
+  datasource:
+    username: root
+    password: 123
+    url: jdbc:mysql://localhost:3306/cloud
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+
+      
+
+  
+  
+  
+
+

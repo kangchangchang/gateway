@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.cloud.provide.dao.NetworkMapper">
+
+
+
+    <select id="getNetworks"  resultType="org.cloud.provide.entity.NetworkVo">
+		    select n.network_id networkId,n.admin_state_up adminStateUp,network_name networkName,n.mtu mtu,n.
+		    port_security_enabled portSecurityEnabled,n.project_id projectId,n.router_type routerType ,n.shared shared ,n.ipv4 ipv4,
+		    n.ipv6 ipv6,n.description description,n.is_default isDefault,n.status status,n.update_date updateDate,n.create_date createDate
+ 			,s.subNetname subNetname from network n 
+ 			left join (select group_concat(subnet_name separator ' / ') subnetName ,network_id from subnet group by network_id ) s 
+           on n.network_id=s.network_id  where 1=1
+            <if test="networkName!=null">
+            AND n.network_name LIKE '%${networkName}%'</if>    
+            
+             <if test="subnetName!=null">
+            AND subnetName LIKE '%${subnetName}%'</if>            
+           limit #{currentPage},#{pageSize}
+    </select>
+    
+    
+        <select id="getCount"  resultType="int">
+		    select  count(s.network_id) from network n 
+ 			left join subnet  s 
+           on n.network_id=s.network_id   where 1=1
+            <if test="networkName!=null">
+            AND n.network_name LIKE '%${networkName}%'</if>    
+            
+             <if test="subnetName!=null">
+            AND subnetName LIKE '%${subnetName}%'</if>            
+  	   </select>
+
+</mapper>
